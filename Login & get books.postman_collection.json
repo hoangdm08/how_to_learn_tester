@@ -1,0 +1,152 @@
+{
+	"info": {
+		"_postman_id": "12190388-11e7-4864-bfd8-7fc2aaaca20e",
+		"name": "Login & get books",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27034331"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"tokenBody\", jsonData['accessToken']);",
+							"pm.test(\"Log in ok\",function () {",
+							"    pm.expect(jsonData.accessToken).to.eql(jsonData['accessToken']);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"username\": \"vinhhuynh01\",\n\"password\": \"Abcde@123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{linkapp}}/auth/signin",
+					"host": [
+						"{{linkapp}}"
+					],
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get books",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"totalItems\", jsonData['totalItems']);",
+							"pm.test(\"Get books ok\",function () {",
+							"    pm.expect(jsonData.totalItems).to.eql(jsonData['totalItems']);",
+							"});",
+							"",
+							"   "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{tokenBody}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-access-token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{linkapp}}/books?offset=2&limit=3",
+					"host": [
+						"{{linkapp}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "2"
+						},
+						{
+							"key": "limit",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "linkapp",
+			"value": "http://14.176.232.213:8087/api"
+		},
+		{
+			"key": "tokenBody",
+			"value": ""
+		},
+		{
+			"key": "totalItems",
+			"value": ""
+		}
+	]
+}
